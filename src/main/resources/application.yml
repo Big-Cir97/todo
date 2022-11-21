@@ -1,0 +1,35 @@
+
+spring:
+  security:
+    user:
+      name: user
+      password: 1234
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/todo?serverTimezone=Asia/Seoul
+    username: root
+    password: 9409
+
+
+
+
+  #data:
+  #  web:
+  #    pageable:
+  #      one-indexed-parameters: true        # paging ?? ?  ? ???? 1? ?? false ? 0 ???.  ?? :  1 -> 0 ?? ?????..? ??? ??? ???? ???
+  #      default-page-size: 5                # @PageableDefault ?? ??? ? ???? 10?
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        # show_sql: true
+        format_sql: true
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
+
+
+  #  https://steady-coding.tistory.com/601 ?? ?? ??
