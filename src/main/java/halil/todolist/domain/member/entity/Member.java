@@ -4,10 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Entity
@@ -17,12 +14,15 @@ public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 100)
     private String email;
-    private String passwd;
+
+    @Column(nullable = false, length = 200)
+    private String password;
 
     @Builder
-    public Member(String email, String passwd) {
+    public Member(String email, String password) {
         this.email = email;
-        this.passwd = passwd;
+        this.password = password;
     }
 }

@@ -1,5 +1,11 @@
 
 spring:
+  thymeleaf:
+    cache: true                     # 서버 재시작없이 페이지 렌더링
+    enabled: true                   # 타임리프 사용
+    prefix: classpath:/templates    # 리소스 경로 설정
+    suffix: .html
+
   security:
     user:
       name: user
@@ -9,9 +15,6 @@ spring:
     url: jdbc:mariadb://localhost:3306/todo?serverTimezone=Asia/Seoul
     username: root
     password: 9409
-
-
-
 
   #data:
   #  web:
