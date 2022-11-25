@@ -20,4 +20,20 @@ public class TodoController {
         model.addAttribute("todos", todoService.memberTodos(request));
         return "/todos";
     }
+
+    /**
+     * Todo 추가
+     * @param request
+     * @param addTodoDto
+     * @param model
+     * @return
+     */
+    @PostMapping("/todos/add")
+    public String addTodo(HttpServletRequest request,
+                          @ModelAttribute AddTodoDto addTodoDto,
+                          Model model) {
+
+        model.addAttribute("addTodoDto", todoService.addTodo(request, addTodoDto));
+        return "redirect:/todos";
+    }
 }

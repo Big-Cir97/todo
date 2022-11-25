@@ -30,6 +30,20 @@ public class TodoService {
         return todoRepository.findTodobyMember(getId(request));
     }
 
+    @Transactional
+    public Long addTodo(HttpServletRequest request, AddTodoDto addTodoDto) {
+        String getEmail = findEmail(request);
+        Member member = memberRepository.findMemberByEmail(getEmail);
+
+        Todo todo = todoRepository.save(Todo.builder()
+                .member(member)
+                .status(addTodoDto.getStatus())
+                .text(addTodoDto.getText())
+                .build());
+
+        return todo.getId();
+    }
+
     private String findEmail(HttpServletRequest request) {
         HttpSession session = request.getSession();
         Object sessionId = session.getAttribute("SessionId");
