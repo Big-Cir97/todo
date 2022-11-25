@@ -36,4 +36,10 @@ public class TodoController {
         model.addAttribute("addTodoDto", todoService.addTodo(request, addTodoDto));
         return "redirect:/todos";
     }
+
+    @PostMapping("/todoUpdate/{id}")
+    public String updateTodo(@PathVariable Long id) {
+        todoService.updateTodo(id);
+        return "redirect:/todos";
+    }
 }

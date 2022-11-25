@@ -44,6 +44,18 @@ public class TodoService {
         return todo.getId();
     }
 
+    @Transactional
+    public void updateTodo(Long id) {
+        Todo todo = todoRepository.findById(id).get();
+
+        if ("Yes".equals(todo.getStatus())) {
+            todo.updateTodo("No");
+        } else {
+            todo.updateTodo("Yes");
+        }
+        todoRepository.save(todo);
+    }
+
     private String findEmail(HttpServletRequest request) {
         HttpSession session = request.getSession();
         Object sessionId = session.getAttribute("SessionId");
