@@ -58,7 +58,6 @@ public class SessionController {
 
     @GetMapping("/session/get/{id}")
     public ResponseEntity getSession(HttpServletRequest request) {
-        System.out.println("sessionId : " + request.getSession().getId());
         return ResponseEntity.ok(sessionService.getSession(request));
     }
 
@@ -77,6 +76,13 @@ public class SessionController {
         // 세션에 Member 정보(email, password) 정보 보관
         session.setAttribute("SessionId", member);
 
-        return String.format("redirect:/session/get/%s", sessionService.login(loginDto.getEmail(), loginDto.getPassword(), response).getId());
+        // return String.format("redirect:/session/get/%s", sessionService.login(loginDto.getEmail(), loginDto.getPassword(), response).getId());
+        return "redirect:/todos";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        sessionService.expire(request);
+        return "redirect:/session/login";
     }
 }

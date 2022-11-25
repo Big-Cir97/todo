@@ -4,6 +4,7 @@ import halil.todolist.domain.member.entity.Member;
 import halil.todolist.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -20,8 +21,10 @@ public class SessionService {
     private final String SESSION_COOKIE_NAME = "SessionId";
     private Map<String, Object> sessionStore = new ConcurrentHashMap<>();
 
+
     private final MemberRepository memberRepository;
 
+    @Transactional
     public Member login(String email, String password, HttpServletResponse response) {
         Member member = checkMember(email, password);
         if (member == null) {
@@ -37,6 +40,7 @@ public class SessionService {
      * @param value : Member 정보
      * @param response
      */
+    @Transactional
     public void createSession(Object value, HttpServletResponse response) {
         // 세션 생성, 저장
         String sessionId = UUID.randomUUID().toString();
@@ -58,7 +62,6 @@ public class SessionService {
         if (sessionCookie == null) {
             return null;
         }
-
         // sessionCookie ==> (name = Cookie Name, value = UUID)
         return sessionStore.get(sessionCookie.getValue());
     }

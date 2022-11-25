@@ -4,6 +4,7 @@ import halil.todolist.domain.member.entity.Member;
 import halil.todolist.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ public class CookieService {
      * 쿠키 로그인
      * Cookie 의 이름은 memberId로 생성
      */
+    @Transactional
     public Member login(HttpServletResponse response, String email, String password) {
         Member member = checkMember(email, password);
         if (member == null) {
