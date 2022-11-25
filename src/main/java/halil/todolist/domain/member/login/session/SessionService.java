@@ -1,6 +1,7 @@
 package halil.todolist.domain.member.login.session;
 
 import halil.todolist.domain.member.entity.Member;
+import halil.todolist.domain.member.exception.session.LoginUserNotFound;
 import halil.todolist.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class SessionService {
     public Member login(String email, String password, HttpServletResponse response) {
         Member member = checkMember(email, password);
         if (member == null) {
-            // Exception 처리
+            throw new LoginUserNotFound();
         }
 
         createSession(member, response);
@@ -89,6 +90,9 @@ public class SessionService {
     }
 
     private Member checkMember(String email, String password) {
+        // null 일경우 Exception 처리
+        memberRepository.findByEmail(email).orElseThrow(() -> new LoginUserNotFound());
+
         Member member = memberRepository.findByEmail(email).get();
         if (member.getPassword().equals(password)) {
             return member;

@@ -51,10 +51,19 @@ public class SessionController {
         return "/session/login";
     }
 
-//    @PostMapping("/session/login")
-//    public String login(@ModelAttribute LoginDto loginDto, HttpServletResponse response) {
-//        return String.format("redirect:/session/get/%s", sessionService.login(loginDto.getEmail(), loginDto.getPassword(), response).getId());
-//    }
+    @PostMapping("/session/login")
+    public String login(@ModelAttribute LoginDto loginDto,
+                        HttpServletResponse response,
+                        HttpServletRequest request) {
+        Member member = sessionService.login(loginDto.getEmail(), loginDto.getPassword(), response);
+
+        // 세션이 있으면 반환, 없으면 신규 세션 생성
+        HttpSession session = request.getSession();
+        // 세션에 Member 정보(email, password) 정보 보관
+        session.setAttribute("SessionId", member);
+
+        return "redirect:/todos";
+    }
 
     @GetMapping("/session/get/{id}")
     public ResponseEntity getSession(HttpServletRequest request) {
@@ -64,8 +73,8 @@ public class SessionController {
     /**
      * @ HttpSession 을 사용
      */
-    @PostMapping("/session/login")
-    public String login(@ModelAttribute LoginDto loginDto,
+    //@PostMapping("/session/login")
+    public String loginHttpSession(@ModelAttribute LoginDto loginDto,
                         HttpServletResponse response,
                         HttpServletRequest request) {
 
@@ -76,7 +85,6 @@ public class SessionController {
         // 세션에 Member 정보(email, password) 정보 보관
         session.setAttribute("SessionId", member);
 
-        // return String.format("redirect:/session/get/%s", sessionService.login(loginDto.getEmail(), loginDto.getPassword(), response).getId());
         return "redirect:/todos";
     }
 
