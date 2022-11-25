@@ -56,6 +56,12 @@ public class TodoService {
         todoRepository.save(todo);
     }
 
+    @Transactional
+    public void deleteTodo(Long id) {
+        todoRepository.deleteById(id);
+    }
+
+
     private String findEmail(HttpServletRequest request) {
         HttpSession session = request.getSession();
         Object sessionId = session.getAttribute("SessionId");

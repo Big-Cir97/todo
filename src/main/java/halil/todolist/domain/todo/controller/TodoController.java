@@ -42,4 +42,10 @@ public class TodoController {
         todoService.updateTodo(id);
         return "redirect:/todos";
     }
+
+    @PostMapping("/todoDelete/{id}")
+    public String deleteTodo(@PathVariable Long id) {
+        todoService.deleteTodo(id);
+        return "redirect:/todos";
+    }
 }
