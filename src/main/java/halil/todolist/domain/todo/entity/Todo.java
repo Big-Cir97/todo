@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -19,19 +20,23 @@ public class Todo {
     @Column(nullable = false)
     private String text;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    private String createDateTime;
 
     @ManyToOne
     private Member member;
 
-    public void updateTodo(String status) {
+    public void updateTodo(Status status) {
         this.status = status;
     }
 
     @Builder
-    public Todo(String text, String status, Member member) {
+    public Todo(String text, Status status, Member member, String createDateTime) {
         this.text = text;
         this.status = status;
         this.member = member;
+        this.createDateTime = createDateTime;
     }
 }

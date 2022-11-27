@@ -29,7 +29,7 @@ class TodoServiceTest {
         Todo build = Todo.builder()
                 .member(memberByEmail)
                 .text("asd")
-                .status("YEs")
+                //.status("YEs")
                 .build();
 
         todoRepository.save(build);

@@ -40,6 +40,7 @@
           <th scope="col">Status</th>
           <th scope="col">Status Update</th>
           <th scope="col">Delete</th>
+          <th scope="col">CreateDate</th>
         </tr>
         </thead>
         <tbody>
@@ -61,6 +62,7 @@
               </div>
             </form>
           </td>
+          <td th:text="${todo.createDateTime}"></td>
         </tr>
         </tbody>
       </table>
@@ -90,8 +92,8 @@
             <div class="form-group">
               <label th:for="status">Status</label>
               <select class="form-control" name="status">
-                <option>Yes</option>
-                <option>No</option>
+                <option>COMPLETED</option>
+                <option>INCOMPLETE</option>
               </select>
             </div>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

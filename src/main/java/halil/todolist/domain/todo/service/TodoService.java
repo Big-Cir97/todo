@@ -3,6 +3,7 @@ package halil.todolist.domain.todo.service;
 import halil.todolist.domain.member.entity.Member;
 import halil.todolist.domain.member.repository.MemberRepository;
 import halil.todolist.domain.todo.dto.AddTodoDto;
+import halil.todolist.domain.todo.entity.Status;
 import halil.todolist.domain.todo.entity.Todo;
 import halil.todolist.domain.todo.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class TodoService {
         return todoRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public List<Todo> memberTodos(HttpServletRequest request) {
         return todoRepository.findTodobyMember(getId(request));
     }
@@ -39,6 +41,7 @@ public class TodoService {
                 .member(member)
                 .status(addTodoDto.getStatus())
                 .text(addTodoDto.getText())
+                .createDateTime(addTodoDto.getCreateDateTime())
                 .build());
 
         return todo.getId();
@@ -47,11 +50,10 @@ public class TodoService {
     @Transactional
     public void updateTodo(Long id) {
         Todo todo = todoRepository.findById(id).get();
-
-        if ("Yes".equals(todo.getStatus())) {
-            todo.updateTodo("No");
+        if (Status.COMPLETED.equals(todo.getStatus())) {
+            todo.updateTodo(Status.INCOMPLETE);
         } else {
-            todo.updateTodo("Yes");
+            todo.updateTodo(Status.COMPLETED);
         }
         todoRepository.save(todo);
     }
@@ -60,7 +62,6 @@ public class TodoService {
     public void deleteTodo(Long id) {
         todoRepository.deleteById(id);
     }
-
 
     private String findEmail(HttpServletRequest request) {
         HttpSession session = request.getSession();

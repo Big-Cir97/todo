@@ -23,6 +23,11 @@ public class SessionController {
     private final SessionService sessionService;
     private final CookieService cookieService;              // HttpSession 확인 Bean 등록
 
+    @GetMapping("/")
+    public String index() {
+        return "/session/login";
+    }
+
     /**
      *
      * @param signUpDto : 계정 생성
