@@ -10,9 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.UUID;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
@@ -45,7 +44,6 @@ public class SessionService {
     public void createSession(Object value, HttpServletResponse response) {
         // 세션 생성, 저장
         String sessionId = UUID.randomUUID().toString();
-        System.out.println(sessionId);
         sessionStore.put(sessionId, value);
 
         // 쿠키 생성
@@ -67,6 +65,13 @@ public class SessionService {
         return sessionStore.get(sessionCookie.getValue());
     }
 
+    /**
+     * 로그아웃(세션 만료)
+     * @param httpSession
+     */
+    public void logout(HttpSession httpSession) {
+        httpSession.invalidate();
+    }
 
     /**
      * 세션 만료
@@ -79,10 +84,12 @@ public class SessionService {
         }
     }
 
+    // login시 생성되는 cookieId Idea는...?
     private Cookie findCookie(HttpServletRequest request, String cookieName) {
         if (request.getCookies() == null) {
             return null;
         }
+
         return Arrays.stream(request.getCookies())
                 .filter(cookie -> cookie.getName().equals(cookieName))
                 .findAny()

@@ -36,7 +36,7 @@ public class SessionController {
     @GetMapping("/session/signup")
     public String signUpForm(@ModelAttribute SignUpDto signUpDto) {
         // model.addAttribute("signUpDto", new SignUpDto());
-        return "/session/signup";
+        return "session/signup";
     }
 
     @PostMapping("/session/signup")
@@ -53,7 +53,7 @@ public class SessionController {
     @GetMapping("/session/login")
     public String loginForm(@ModelAttribute LoginDto loginDto) {
         // model.addAttribute("loginDto", new LoginDto());
-        return "/session/login";
+        return "session/login";
     }
 
     @PostMapping("/session/login")
@@ -94,8 +94,9 @@ public class SessionController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request) {
-        sessionService.expire(request);
-        return "redirect:/session/login";
+    public String logout(HttpSession session) {
+        // sessionService.expire(request);
+        session.invalidate();
+        return "redirect:/todos";
     }
 }

@@ -18,7 +18,7 @@ public class TodoController {
     @GetMapping("/todos")
     public String todos(Model model, HttpServletRequest request) {
         model.addAttribute("todos", todoService.memberTodos(request));
-        return "/todos";
+        return "todos";
     }
 
     /**
