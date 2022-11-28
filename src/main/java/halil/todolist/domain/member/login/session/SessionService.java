@@ -68,10 +68,12 @@ public class SessionService {
 
     /**
      * 로그아웃(세션 만료)
-     * @param httpSession
+     * @param request
      */
-    public void logout(HttpSession httpSession) {
-        httpSession.invalidate();
+    public void logout(HttpServletRequest request) {
+        // HttpSession : session.invalidate();  --> 세션을 무효화 할 수 있지 사용자가 요청을 또 보내면 정보가 그대로 남아있다.
+        request.getSession().invalidate();      // 세션을 무효화 하고
+        request.getSession(true);        // 새로운 세션ID 발급
     }
 
     /**
@@ -85,7 +87,6 @@ public class SessionService {
         }
     }
 
-    // login시 생성되는 cookieId Idea는...?
     private Cookie findCookie(HttpServletRequest request, String cookieName) {
         if (request.getCookies() == null) {
             return null;

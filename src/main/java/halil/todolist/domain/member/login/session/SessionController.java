@@ -17,7 +17,6 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
-@SessionAttributes("SessionId")
 public class SessionController {
 
     private final MemberService memberService;
@@ -95,9 +94,10 @@ public class SessionController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session, HttpServletRequest request) {
+    public String logout(HttpServletRequest request, HttpSession session) {
         // sessionService.expire(request);
-        session.invalidate();
-        return "redirect:/session/login";
+        // session.invalidate();
+        sessionService.logout(request);
+        return "redirect:/todos";
     }
 }
