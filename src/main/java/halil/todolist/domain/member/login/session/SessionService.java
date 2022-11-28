@@ -42,9 +42,10 @@ public class SessionService {
      */
     @Transactional
     public void createSession(Object value, HttpServletResponse response) {
+        Member member = (Member) value;
         // 세션 생성, 저장
         String sessionId = UUID.randomUUID().toString();
-        sessionStore.put(sessionId, value);
+        sessionStore.put(sessionId, member);
 
         // 쿠키 생성
         Cookie cookie = new Cookie(SESSION_COOKIE_NAME, sessionId);
