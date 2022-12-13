@@ -98,6 +98,6 @@ public class SessionController {
         // sessionService.expire(request);
         // session.invalidate();
         sessionService.logout(request);
-        return "redirect:/todos";
+        return "redirect:/session/login";
     }
 }
