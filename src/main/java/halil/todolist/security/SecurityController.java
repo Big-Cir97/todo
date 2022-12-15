@@ -1,4 +1,4 @@
-package halil.todolist.domain.security;
+package halil.todolist.security;
 
 import halil.todolist.domain.member.repository.MemberRepository;
 import halil.todolist.domain.member.service.MemberService;

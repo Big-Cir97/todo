@@ -4,6 +4,7 @@ import halil.todolist.domain.member.entity.Member;
 import halil.todolist.domain.member.exception.session.LoginUserNotFound;
 import halil.todolist.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SessionService {
 
     private final String SESSION_COOKIE_NAME = "SessionId";
+    private final PasswordEncoder passwordEncoder;
     private Map<String, Object> sessionStore = new ConcurrentHashMap<>();
 
 
@@ -103,7 +105,8 @@ public class SessionService {
         memberRepository.findByEmail(email).orElseThrow(() -> new LoginUserNotFound());
 
         Member member = memberRepository.findByEmail(email).get();
-        if (member.getPassword().equals(password)) {
+        // member.getPassword().equals()
+        if (passwordEncoder.matches(password, member.getPassword())) {
             return member;
         } else {
             return null;
