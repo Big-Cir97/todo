@@ -6,6 +6,7 @@ import halil.todolist.domain.member.exception.session.EmailDuplicate;
 import halil.todolist.domain.member.exception.session.LoginUserNotFound;
 import halil.todolist.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +39,7 @@ public class MemberServiceImpl implements MemberService {
     public Member login(String email, String password) {
         Member member = checkMember(email, password);
         if (member == null) {
-            throw new LoginUserNotFound();
+            throw new BadCredentialsException("ㅇㅇㅇㅇ");
         }
 
         return member;

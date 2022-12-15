@@ -1,8 +1,9 @@
 package halil.todolist.security;
 
-import halil.todolist.domain.member.filter.AuthenticationFilter;
-import halil.todolist.domain.member.filter.testFilter.FilterOne;
-import halil.todolist.domain.member.filter.testFilter.FilterTwo;
+import halil.todolist.security.filter.AuthenticationFilter;
+import halil.todolist.security.filter.ExceptionHandlerFilter;
+import halil.todolist.security.manager.CustomAuthenticationManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,16 +19,19 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    private final CustomAuthenticationManager customAuthenticationManager;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+//    public SecurityConfig(CustomAuthenticationManager customAuthenticationManager) {
+//        this.customAuthenticationManager = customAuthenticationManager;
+//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager);
         authenticationFilter.setFilterProcessesUrl("/authenticate");
 
         http
@@ -38,9 +42,8 @@ public class SecurityConfig {
                 .and()
                 .httpBasic()
                 .and()
-                .addFilterBefore(new FilterOne(), AuthenticationFilter.class)
+                .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
                 .addFilter(authenticationFilter)
-                .addFilterAfter(new FilterTwo(), AuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);    // 스프링 시큐리티에서 세션 생성을 비활성화
 
         return http.build();
@@ -50,13 +53,13 @@ public class SecurityConfig {
     public UserDetailsService users() {
         UserDetails admin = User.builder()
                 .username("admin")
-                .password(passwordEncoder().encode(("1234")))
+                .password(passwordEncoder.encode(("1234")))
                 .roles("ADMIN")
                 .build();
 
         UserDetails user = User.builder()
                 .username("user")
-                .password(passwordEncoder().encode("1234"))
+                .password(passwordEncoder.encode("1234"))
                 .roles("USER")
                 .build();
 

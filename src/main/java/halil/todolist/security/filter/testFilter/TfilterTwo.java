@@ -1,4 +1,4 @@
-package halil.todolist.domain.member.filter.testFilter;
+package halil.todolist.security.filter.testFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import halil.todolist.domain.member.entity.Member;
