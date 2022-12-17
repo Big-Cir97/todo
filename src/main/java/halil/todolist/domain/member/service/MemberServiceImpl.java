@@ -5,13 +5,18 @@ import halil.todolist.domain.member.entity.Member;
 import halil.todolist.domain.member.exception.session.EmailDuplicate;
 import halil.todolist.domain.member.exception.session.LoginUserNotFound;
 import halil.todolist.domain.member.repository.MemberRepository;
+import halil.todolist.security.filter.AuthenticationFilter;
+import halil.todolist.security.manager.CustomAuthenticationManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +24,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CustomAuthenticationManager customAuthenticationManager;
 
     @Override
     @Transactional
@@ -36,33 +42,23 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public Member login(String email, String password) {
-        Member member = checkMember(email, password);
-        if (member == null) {
-            throw new BadCredentialsException("ㅇㅇㅇㅇ");
+    public String login(String email, String password) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        if (member.isEmpty()) {
+            return null;
         }
 
-        return member;
+        if (passwordEncoder.matches(password, member.get().getPassword())) {
+            return member.get().getEmail();
+        } else {
+            return null;
+        }
     }
 
     @Override
     public void checkEmailDuplicate(String email) {
         if (memberRepository.findByEmail(email).isPresent()) {
             throw new EmailDuplicate();
-        }
-    }
-
-    @Override
-    public Member checkMember(String email, String password) {
-        // null 일경우 Exception 처리
-        memberRepository.findByEmail(email).orElseThrow(() -> new LoginUserNotFound());
-
-        Member member = memberRepository.findByEmail(email).get();
-        // member.getPassword().equals()
-        if (passwordEncoder.matches(password, member.getPassword())) {
-            return member;
-        } else {
-            return null;
         }
     }
 }

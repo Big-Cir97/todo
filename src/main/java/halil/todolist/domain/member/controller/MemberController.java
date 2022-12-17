@@ -56,15 +56,15 @@ public class MemberController {
         return "/login";
     }
 
-    @ResponseBody
-    @PostMapping("/login")
-    public ResponseEntity login(@Valid @ModelAttribute LoginDto loginDto) {
-        return ResponseEntity.ok(memberService.login(loginDto.getEmail(), loginDto.getPassword()));
-    }
-
+//    @ResponseBody
 //    @PostMapping("/login")
-//    public String login(@Valid @ModelAttribute LoginDto loginDto) {
-//        memberService.login(loginDto.getEmail(), loginDto.getPassword());
-//        return "redirect:/todos";
+//    public ResponseEntity login(@Valid @ModelAttribute LoginDto loginDto) {
+//        return ResponseEntity.ok(memberService.login(loginDto.getEmail(), loginDto.getPassword()));
 //    }
+
+    @PostMapping("/login")
+    public String login(@Valid @ModelAttribute LoginDto loginDto) {
+        memberService.login(loginDto.getEmail(), loginDto.getPassword());
+        return "redirect:/todos";
+    }
 }
