@@ -21,10 +21,6 @@ public class SecurityConfig {
     private final CustomAuthenticationManager customAuthenticationManager;
     private final BCryptPasswordEncoder passwordEncoder;
 
-//    public SecurityConfig(CustomAuthenticationManager customAuthenticationManager) {
-//        this.customAuthenticationManager = customAuthenticationManager;
-//    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager);
