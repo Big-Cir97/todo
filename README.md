@@ -12,7 +12,8 @@ ec2 : http://43.200.14.101:5009/session/login
 
 
 ## 리스트 작성
-![addtodo](https://user-images.githubusercontent.com/99483390/218173146-5d19de70-1fcc-4c3a-9948-c602fb3c868a.png)
+![스크린샷 2023-02-11 오전 3 45 14](https://user-images.githubusercontent.com/99483390/218173519-720214c7-4ba2-4f84-848d-841297737aed.png)
+
 
 
 
